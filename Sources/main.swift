@@ -70,12 +70,12 @@ try WebSocket.connect(to: webSocketURL) { ws in
             if !message.hasPrefix(MATE) {
                 return
             }
-            
-            message = message.replacingOccurrences(of: MATE, with: "")
-            if message.contains("<@") {
-                if let user = message.components(separatedBy: "<@").last?.components(separatedBy: ">").first {
-                    fromId = user.uppercased()
-                }
+        }
+        
+        message = message.replacingOccurrences(of: MATE, with: "")
+        if message.contains("<@") {
+            if let user = message.components(separatedBy: "<@").last?.components(separatedBy: ">").first {
+                fromId = user.uppercased()
             }
         }
         
