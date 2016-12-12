@@ -12,6 +12,13 @@ extension MySQL.Database {
         }
         return try matesCount(for: user)
     }
+    
+    func removeMate(for user: String) throws -> Int {
+        _ = try create()
+        let command = "INSERT INTO mates (user, count) VALUES(?, 1) ON DUPLICATE KEY UPDATE count = count - 1;"
+        try execute(command, [user])
+        return try matesCount(for: user)
+    }
 
     func matesCount(for user: String) throws -> Int {
         _ = try create()
@@ -29,6 +36,20 @@ extension MySQL.Database {
     func set(mates: Int, for user: String) throws -> Int {
         _ = try create()
         let command = "INSERT INTO mates (user, count) VALUES(?, ?) ON DUPLICATE KEY UPDATE count = ?;"
+        try execute(command, [user, mates, mates])
+        return try matesCount(for: user)
+    }
+    
+    func addAmount(mates: Int, for user: String) throws -> Int {
+        _ = try create()
+        let command = "INSERT INTO mates (user, count) VALUES(?, ?) ON DUPLICATE KEY UPDATE count = count + ?;"
+        try execute(command, [user, mates, mates])
+        return try matesCount(for: user)
+    }
+    
+    func removeAmount(mates: Int, for user: String) throws -> Int {
+        _ = try create()
+        let command = "INSERT INTO mates (user, count) VALUES(?, ?) ON DUPLICATE KEY UPDATE count = count - ?;"
         try execute(command, [user, mates, mates])
         return try matesCount(for: user)
     }
